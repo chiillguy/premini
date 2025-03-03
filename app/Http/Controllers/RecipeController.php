@@ -1,0 +1,99 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\RecipeRequest;
+use App\Models\Recipe;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+
+class RecipeController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $query = Recipe::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('title', 'LIKE', "%{$search}%")->orWhere('description', 'LIKE', "%{$search}%");
+        }
+
+        return response()->json($query->paginate(10));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(RecipeRequest $request)
+    {
+        $recipe = Recipe::create($request->validated());
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('recipes', 'public');
+
+            $recipe->update(['image' => $imagePath]);
+        }
+
+        return response()->json([
+            'message' => 'Recipe created successfully',
+            'photo_url' => isset($imagePath) ? asset("storage/$imagePath") : null,
+            'recipe' => $recipe->load(['chef', 'category'])
+        ], 201);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Recipe $recipe)
+    {
+        return response()->json($recipe->load(['chef', 'category']));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(RecipeRequest $request, Recipe $recipe)
+    {
+
+        try {
+            
+            Log::info('Request data:', $request->all());
+    
+            $recipe->update($request->validated());
+    
+    
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('recipes', 'public');
+                $recipe->update(['image' => $imagePath]);
+            }
+    
+            return response()->json([
+                'message' => 'Recipe updated successfully',
+                'recipe' => $recipe->load(['chef', 'category'])
+            ], 202);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => $e->errors(),
+            ], 202);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 202);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Recipe $recipe)
+    {
+        $recipe->delete();
+
+        return response()->json(['message' => 'Recipe deleted successfully'], 200);
+    }
+}

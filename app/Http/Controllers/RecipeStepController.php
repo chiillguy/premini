@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\RecipeStepRequest;
+use App\Models\Recipe;
+use App\Models\Recipe_step;
+use Illuminate\Http\Request;
+
+class RecipeStepController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $recipe_step = Recipe_step::with('recipe')->get();
+
+        return response()->json($recipe_step);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(RecipeStepRequest $request)
+    {
+        $request->validated();
+
+        $recipe_id = Recipe::latest()->first()->id;
+
+        $steps = [];
+        $stepNumber = Recipe_step::where('recipe_id', $recipe_id)->count() + 1;
+
+        foreach ($request->steps as $step) {
+            $imagePath = null;
+            if (!empty($step['image'])) {
+                $imagePath = $step['image']->store('recipe-steps', 'public');
+            }
+
+            $recipeStep = Recipe_step::create([
+                'recipe_id' => $recipe_id,
+                'step_no' => $stepNumber++,
+                'instruction' => $step['instruction'],
+                'image' => $imagePath ? asset("storage/$imagePath") : null
+            ]);
+
+            $steps[] = $recipeStep;
+        }
+
+        return response()->json([
+            'message' => 'Recipe step created successfully',
+            'steps' => $steps
+        ], 201);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Recipe_step $recipe_step)
+    {
+        return response()->json($recipe_step->load('recipe'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(RecipeStepRequest $request, Recipe_step $recipe_step)
+    {
+        $recipe_step->update($request->validated());
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('recipe-steps', 'public');
+            $recipe_step->update(['image' => $imagePath]);
+        }
+
+        return response()->json([
+            'message' => 'Recipe step updated successfully',
+            'recipe_step' => $recipe_step->load('recipe')
+        ], 202);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Recipe_step $recipe_step)
+    {
+        $recipe_step->delete();
+
+        return response()->json(['message' => 'Recipe step deleted successfully'], 200);
+    }
+}
