@@ -17,7 +17,7 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('me', [AuthController::class, 'me'])->name('me');
-    Route::apiResource('recipe-review', RecipeReviewController::class);
+    Route::apiResource('recipe-reviews', RecipeReviewController::class);
 
     Route::middleware(RoleMiddleware::class . ':admin')->group(function () {
         Route::apiResource('categories', CategoryController::class);
@@ -30,13 +30,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::middleware(RoleMiddleware::class . ':chef')->group(function () {
         Route::apiResource('recipe-steps', RecipeStepController::class);
-        Route::apiResource('recipe-ingredient', RecipeIngredientController::class);
+        Route::apiResource('recipe-ingredients', RecipeIngredientController::class);
     });
 
-    Route::middleware(RoleMiddleware::class . ':user')->group(function () {
+    Route::middleware(RoleMiddleware::class . ':admin,chef,user')->group(function () {
         Route::get('/recipes', [RecipeController::class, 'index'])->name('recipes');
 
     });
 });
-
-//hallow
