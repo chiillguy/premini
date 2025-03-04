@@ -23,8 +23,8 @@ class RecipeIngredientRequest extends FormRequest
     {
         return [
             'recipe_id' => 'exists:recipes,id',
-            'ingredient' => 'required|string|max:255',
-            'quantity' => 'required|numeric|min:0'
+            'ingredients.*.ingredient' => 'required|string|max:255',
+            'ingredients.*.quantity' => 'required|min:0'
         ];
     }
 }

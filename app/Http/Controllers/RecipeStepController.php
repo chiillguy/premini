@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RecipeStepRequest;
+use App\Http\Requests\UpdateRecipeStepRequest;
+use App\Http\Resources\RecipeStepResource;
 use App\Models\Recipe;
 use App\Models\Recipe_step;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RecipeStepController extends Controller
 {
@@ -14,9 +17,7 @@ class RecipeStepController extends Controller
      */
     public function index()
     {
-        $recipe_step = Recipe_step::with('recipe')->get();
-
-        return response()->json($recipe_step);
+        return RecipeStepResource::collection(Recipe_step::all());
     }
 
     /**
@@ -25,14 +26,12 @@ class RecipeStepController extends Controller
     public function store(RecipeStepRequest $request)
     {
         $request->validated();
-
         $recipe_id = Recipe::latest()->first()->id;
-
         $steps = [];
+
         $stepNumber = Recipe_step::where('recipe_id', $recipe_id)->count() + 1;
 
         foreach ($request->steps as $step) {
-            $imagePath = null;
             if (!empty($step['image'])) {
                 $imagePath = $step['image']->store('recipe-steps', 'public');
             }
@@ -44,11 +43,11 @@ class RecipeStepController extends Controller
                 'image' => $imagePath ? asset("storage/$imagePath") : null
             ]);
 
-            $steps[] = $recipeStep;
+            $steps[] = new RecipeStepResource($recipeStep);
         }
 
         return response()->json([
-            'message' => 'Recipe step created successfully',
+            'message' => 'Recipe steps created successfully',
             'steps' => $steps
         ], 201);
     }
@@ -58,24 +57,27 @@ class RecipeStepController extends Controller
      */
     public function show(Recipe_step $recipe_step)
     {
-        return response()->json($recipe_step->load('recipe'));
+        return new RecipeStepResource($recipe_step);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(RecipeStepRequest $request, Recipe_step $recipe_step)
+    public function update(UpdateRecipeStepRequest $request, $id)
     {
-        $recipe_step->update($request->validated());
+        $recipe_step = Recipe_step::findOrFail($id);
+        $validatedData = $request->validated();
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('recipe-steps', 'public');
-            $recipe_step->update(['image' => $imagePath]);
+            $validatedData['image'] = asset("storage/$imagePath");
         }
+
+        $recipe_step->update($validatedData);
 
         return response()->json([
             'message' => 'Recipe step updated successfully',
-            'recipe_step' => $recipe_step->load('recipe')
+            'recipe_step' => new RecipeStepResource($recipe_step)
         ], 202);
     }
 

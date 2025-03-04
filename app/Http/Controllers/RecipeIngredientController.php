@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RecipeIngredientRequest;
+use App\Http\Resources\RecipeIngredientResource;
 use App\Models\Recipe;
 use App\Models\Recipe_ingredient;
 use Illuminate\Http\Request;
@@ -14,9 +15,7 @@ class RecipeIngredientController extends Controller
      */
     public function index()
     {
-        $recipe_ingredient = Recipe_ingredient::with('recipe');
-
-        return response()->json($recipe_ingredient);
+        return RecipeIngredientResource::collection(Recipe_ingredient::all());
     }
 
     /**
@@ -24,6 +23,7 @@ class RecipeIngredientController extends Controller
      */
     public function store(RecipeIngredientRequest $request)
     {
+        $request->validated();
         $recipe_id = Recipe::latest()->first()->id;
 
         $ingredients = [];
@@ -35,7 +35,7 @@ class RecipeIngredientController extends Controller
                 'quantity' => $ingredient['quantity']
             ]);
 
-            $ingredients[] = $recipeIngredient;
+            $ingredients[] = new RecipeIngredientResource($recipeIngredient);
         }
         
         return response()->json([
@@ -49,19 +49,20 @@ class RecipeIngredientController extends Controller
      */
     public function show(Recipe_ingredient $recipe_ingredient)
     {
-        return response()->json($recipe_ingredient->load('recipe'));
+        return new RecipeIngredientResource($recipe_ingredient);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Recipe_ingredient $request, Recipe_ingredient $recipe_ingredient)
+    public function update(RecipeIngredientRequest $request, $id)
     {
+        $recipe_ingredient = Recipe_ingredient::findOrFail($id);
         $recipe_ingredient->update($request->validated());
 
         return response()->json([
             'message' => 'Recipe ingredient updated',
-            'recipe_ingredient' => $recipe_ingredient->load('recipe')
+            'recipe_ingredient' => new RecipeIngredientResource($recipe_ingredient)
         ], 202);
     }
 

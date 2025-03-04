@@ -22,9 +22,8 @@ class RecipeReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'exists:users,id',
             'recipe_id' => 'required|exists:recipes,id',
-            'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ];

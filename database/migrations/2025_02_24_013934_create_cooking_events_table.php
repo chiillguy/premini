@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->dateTime('date');
             $table->string('location');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

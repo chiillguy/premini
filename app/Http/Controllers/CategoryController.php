@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,9 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-
-        return response()->json($categories);
+        return CategoryResource::collection(Category::all());
     }
 
     /**
@@ -28,7 +27,7 @@ class CategoryController extends Controller
 
         return response()->json([
             'message' => 'Category created', 
-            'category' => $category
+            'category' => new CategoryResource($category)
         ], 201);
     }
 
@@ -37,7 +36,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return response()->json($category);
+        return new CategoryResource($category);
     }
 
     /**
@@ -49,7 +48,7 @@ class CategoryController extends Controller
 
         return response()->json([
             'message' => 'Category updated', 
-            'category' => $category
+            'category' => new CategoryResource($category)
         ], 202);
     }
 

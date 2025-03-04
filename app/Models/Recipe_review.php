@@ -11,6 +11,13 @@ class Recipe_review extends Model
         'id',
     ];
 
+    protected $fillable = [
+        'user_id',
+        'recipe_id',
+        'content',
+        'image'
+    ];
+
     /**
      * Get the user that owns the Recipe_review
      *

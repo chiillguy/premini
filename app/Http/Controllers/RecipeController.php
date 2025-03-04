@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RecipeRequest;
+use App\Http\Resources\RecipeResource;
 use App\Models\Recipe;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class RecipeController extends Controller
             $query->where('title', 'LIKE', "%{$search}%")->orWhere('description', 'LIKE', "%{$search}%");
         }
 
-        return response()->json($query->paginate(10));
+        return RecipeResource::collection($query->paginate(10));
     }
 
     /**
@@ -42,7 +43,7 @@ class RecipeController extends Controller
         return response()->json([
             'message' => 'Recipe created successfully',
             'photo_url' => isset($imagePath) ? asset("storage/$imagePath") : null,
-            'recipe' => $recipe->load(['chef', 'category'])
+            'recipe' => new RecipeResource($recipe)
         ], 201);
     }
 
@@ -51,7 +52,7 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        return response()->json($recipe->load(['chef', 'category']));
+        return new RecipeResource($recipe);
     }
 
     /**
@@ -59,32 +60,20 @@ class RecipeController extends Controller
      */
     public function update(RecipeRequest $request, Recipe $recipe)
     {
+        Log::info('Request data:', $request->all());
 
-        try {
-            
-            Log::info('Request data:', $request->all());
-    
-            $recipe->update($request->validated());
-    
-    
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('recipes', 'public');
-                $recipe->update(['image' => $imagePath]);
-            }
-    
-            return response()->json([
-                'message' => 'Recipe updated successfully',
-                'recipe' => $recipe->load(['chef', 'category'])
-            ], 202);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => $e->errors(),
-            ], 202);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-            ], 202);
+        $recipe->update($request->validated());
+
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('recipes', 'public');
+            $recipe->update(['image' => $imagePath]);
         }
+
+        return response()->json([
+            'message' => 'Recipe updated successfully',
+            'recipe' => new RecipeResource($recipe)
+        ], 202);
     }
 
     /**

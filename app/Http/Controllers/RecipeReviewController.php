@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RecipeReviewRequest;
+use App\Http\Resources\RecipeResource;
+use App\Http\Resources\RecipeReviewResource;
 use App\Models\Recipe_review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RecipeReviewController extends Controller
 {
@@ -13,9 +16,7 @@ class RecipeReviewController extends Controller
      */
     public function index()
     {
-        $recipe_review = Recipe_review::with(['user', 'recipe'])->get();
-
-        return response()->json($recipe_review);
+        return RecipeReviewResource::collection(Recipe_review::all());
     }
 
     /**
@@ -23,7 +24,12 @@ class RecipeReviewController extends Controller
      */
     public function store(RecipeReviewRequest $request)
     {
-        $recipe_review = Recipe_review::create($request->validated());
+        $recipe_review = Recipe_review::create([
+            'user_id' => Auth::id(),
+            'recipe_id' => $request->recipe_id,
+            'content' => $request->content,
+            'image' => $request->image,
+        ]);
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('recipe-reviews', 'public');
@@ -34,7 +40,7 @@ class RecipeReviewController extends Controller
         return response()->json([
             'message' => 'Recipe review created',
             'photo_url' => isset($imagePath) ? asset("storage/$imagePath") : null,
-            'recipe_review' => $recipe_review->load(['user', 'recipe'])
+            'recipe_review' => new RecipeResource($recipe_review)
         ], 201);
     }
 
@@ -43,7 +49,7 @@ class RecipeReviewController extends Controller
      */
     public function show(Recipe_review $recipe_review)
     {
-        return response()->json($recipe_review->load(['user', 'recipe']));
+        return new RecipeResource($recipe_review);
     }
 
     /**
@@ -60,7 +66,7 @@ class RecipeReviewController extends Controller
 
         return response()->json([
             'message' => 'Recipe review updated',
-            'recipe_review' => $recipe_review->load(['user', 'recipe'])
+            'recipe_review' => new RecipeReviewResource($recipe_review)
         ], 202);
     }
 
