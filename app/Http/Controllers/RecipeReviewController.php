@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RecipeReviewRequest;
+use App\Http\Requests\UpdateRecipeReviewRequest;
 use App\Http\Resources\RecipeResource;
 use App\Http\Resources\RecipeReviewResource;
 use App\Models\Recipe_review;
@@ -55,7 +56,7 @@ class RecipeReviewController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RecipeReviewRequest $request, Recipe_review $recipe_review)
+    public function update(UpdateRecipeReviewRequest $request, Recipe_review $recipe_review)
     {
         $recipe_review->update($request->validated());
 
