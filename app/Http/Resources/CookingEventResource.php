@@ -16,7 +16,7 @@ class CookingEventResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'chef_id' => $this->chef->name,
+            'chef' => $this->chef->name,
             'title' => $this->title,
             'description' => $this->description,
             'date' => $this->date,
