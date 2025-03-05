@@ -24,6 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // **Admin**
     Route::middleware(RoleMiddleware::class . ':admin')->group(function () {
         Route::apiResource('categories', CategoryController::class);
+        Route::apiResource('recipe-reviews', RecipeReviewController::class)->only('delete');
     });
 
     // **Chef & Admin**
