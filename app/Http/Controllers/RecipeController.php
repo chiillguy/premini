@@ -42,7 +42,6 @@ class RecipeController extends Controller
 
         return response()->json([
             'message' => 'Recipe created successfully',
-            'photo_url' => isset($imagePath) ? asset("storage/$imagePath") : null,
             'recipe' => new RecipeResource($recipe)
         ], 201);
     }
