@@ -24,7 +24,6 @@ class RecipeIngredientRequest extends FormRequest
         return [
             'recipe_id' => 'exists:recipes,id',
             'ingredients.*.ingredient' => 'required|string|max:255',
-            'ingredients.*.quantity' => 'required|min:0'
         ];
     }
 }
