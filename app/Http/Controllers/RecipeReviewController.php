@@ -26,7 +26,7 @@ class RecipeReviewController extends Controller
     public function store(RecipeReviewRequest $request)
     {
         $recipe_review = Recipe_review::create([
-            'user_id' => Auth::id(),
+            'user_id' => $request->user_id,
             'recipe_id' => $request->recipe_id,
             'content' => $request->content,
             'image' => $request->image,
