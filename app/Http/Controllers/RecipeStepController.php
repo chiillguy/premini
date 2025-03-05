@@ -26,12 +26,14 @@ class RecipeStepController extends Controller
     public function store(RecipeStepRequest $request)
     {
         $request->validated();
-        $recipe_id = Recipe::latest()->first()->id;
+        $recipe_id = $request->recipe_id ?? Recipe::latest()->first()?->id;
         $steps = [];
 
         $stepNumber = Recipe_step::where('recipe_id', $recipe_id)->count() + 1;
 
         foreach ($request->steps as $step) {
+            $imagePath = null;
+
             if (!empty($step['image'])) {
                 $imagePath = $step['image']->store('recipe-steps', 'public');
             }
