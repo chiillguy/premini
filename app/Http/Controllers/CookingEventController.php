@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CookingEventRequest;
 use App\Http\Requests\UpdateCookingEventRequest;
+use App\Http\Resources\CookingEventResource;
 use App\Models\Cooking_event;
 use Illuminate\Http\Request;
 
@@ -14,9 +15,7 @@ class CookingEventController extends Controller
      */
     public function index()
     {
-        $cooking_event = Cooking_event::with('chef');
-
-        return response()->json($cooking_event);
+        return CookingEventResource::collection(Cooking_event::all());
     }
 
     /**
@@ -28,16 +27,16 @@ class CookingEventController extends Controller
 
         return response()->json([
             'message' => 'Cooking event created',
-            'cooking_event' => $cooking_event->load('chef')
+            'cooking_event' => new CookingEventResource($cooking_event)
         ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Cooking_event $cooking_event)
     {
-        //
+        return new CookingEventResource($cooking_event);
     }
 
     /**
@@ -49,7 +48,7 @@ class CookingEventController extends Controller
 
         return response()->json([
             'message' => 'Cooking event updated',
-            'cooking_event' => $cooking_event->load('chef')
+            'cooking_event' => new CookingEventResource($cooking_event)
         ], 202);
     }
 
