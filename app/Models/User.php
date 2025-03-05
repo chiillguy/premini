@@ -59,7 +59,7 @@ class User extends Authenticatable
      */
     public function recipes(): HasMany
     {
-        return $this->hasMany(Comment::class, 'chef_id');
+        return $this->hasMany(Recipe::class, 'chef_id');
     }
 
     /**
@@ -69,6 +69,6 @@ class User extends Authenticatable
      */
     public function recipe_reviews(): HasMany
     {
-        return $this->hasMany(Comment::class, 'user_id');
+        return $this->hasMany(Recipe_review::class, 'user_id');
     }
 }
