@@ -24,7 +24,7 @@ class RecipeIngredientController extends Controller
     public function store(RecipeIngredientRequest $request)
     {
         $request->validated();
-        $recipe_id = Recipe::latest()->first()->id;
+        $recipe_id = $request->recipe_id ?? Recipe::latest()->first()->id;
 
         $ingredients = [];
 
@@ -32,7 +32,6 @@ class RecipeIngredientController extends Controller
             $recipeIngredient = Recipe_ingredient::create([
                 'recipe_id' => $recipe_id,
                 'ingredient' => $ingredient['ingredient'],
-                'quantity' => $ingredient['quantity']
             ]);
 
             $ingredients[] = new RecipeIngredientResource($recipeIngredient);
