@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CookingEventRequest;
+use App\Http\Requests\UpdateCookingEventRequest;
 use App\Models\Cooking_event;
 use Illuminate\Http\Request;
 
@@ -42,7 +43,7 @@ class CookingEventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CookingEventRequest $request, Cooking_event $cooking_event)
+    public function update(UpdateCookingEventRequest $request, Cooking_event $cooking_event)
     {
         $cooking_event->update($request->validated());
 
