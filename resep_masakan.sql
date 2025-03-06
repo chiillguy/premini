@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 03 Mar 2025 pada 08.04
+-- Waktu pembuatan: 06 Mar 2025 pada 08.07
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.27
 
@@ -63,8 +63,8 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Japanese Food', '2025-02-25 09:29:43', '2025-02-25 09:29:43'),
-(2, 'Sea Food', '2025-02-25 18:43:11', '2025-02-25 18:43:11');
+(1, 'Western Food', '2025-03-04 21:19:20', '2025-03-04 21:19:20'),
+(2, 'Dessert', '2025-03-04 21:19:48', '2025-03-04 21:19:48');
 
 -- --------------------------------------------------------
 
@@ -79,9 +79,19 @@ CREATE TABLE `cooking_events` (
   `description` text NOT NULL,
   `date` datetime NOT NULL,
   `location` varchar(255) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `cooking_events`
+--
+
+INSERT INTO `cooking_events` (`id`, `chef_id`, `title`, `description`, `date`, `location`, `image`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Ulang Tahun Royco', 'Ramaikan acara yang akan segera kami selenggarakan, nikmati berbagai bazar makanan, royco gratis, dan performa dari beberapa artis terkenal.', '2025-05-25 00:00:00', 'Jl. Aditama Perwira No.13 Blok C', NULL, '2025-03-04 23:30:19', '2025-03-04 23:30:19'),
+(2, 1, 'Ulang Tahun Royco', 'Ramaikan acara yang akan segera kami selenggarakan, nikmati berbagai bazar makanan, royco gratis, dan performa dari beberapa artis terkenal.', '2025-05-25 08:30:00', 'Jl. Aditama Perwira No.13 Blok C', NULL, '2025-03-04 23:41:55', '2025-03-05 06:02:09'),
+(3, 1, 'Ulang Tahun Royco', 'Ramaikan acara yang akan segera kami selenggarakan, nikmati berbagai bazar makanan, royco gratis, dan performa dari beberapa artis terkenal.', '2025-05-25 00:00:00', 'Jl. Aditama Perwira No.13 Blok C', NULL, '2025-03-05 03:45:05', '2025-03-05 03:45:05');
 
 -- --------------------------------------------------------
 
@@ -198,15 +208,11 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
-(1, 'App\\Models\\User', 1, 'auth_token', '9139fa3736cb4bea55e5924877e2ff8ac2bc4f4f104279fa0e799741f30ca227', '[\"*\"]', NULL, NULL, '2025-02-25 08:27:10', '2025-02-25 08:27:10'),
-(2, 'App\\Models\\User', 1, 'auth_token', '2625762e02b476403dcfbf29fbd646c06068b503b70dd689dc773ad0cd1fa3c4', '[\"admin\"]', '2025-02-25 08:28:57', NULL, '2025-02-25 08:27:21', '2025-02-25 08:28:57'),
-(3, 'App\\Models\\User', 1, 'auth_token', '7b038f4f264d94bfacec70577d27e35ca7e9756352d5f364373a71e4f04fe4a4', '[\"admin\"]', NULL, NULL, '2025-02-25 08:43:00', '2025-02-25 08:43:00'),
-(7, 'App\\Models\\User', 1, 'auth_token', '81e823760946558acdc257cca434a78e30c47630438f12eada3f2f137836a3f2', '[\"admin\"]', '2025-02-25 18:43:11', NULL, '2025-02-25 09:13:15', '2025-02-25 18:43:11'),
-(8, 'App\\Models\\User', 2, 'auth_token', '443e24e0be030642ec926e1d14dcb58b5596afb7a6595cb8365a9372c0c33819', '[\"chef\"]', '2025-02-25 20:30:59', NULL, '2025-02-25 09:49:59', '2025-02-25 20:30:59'),
-(9, 'App\\Models\\User', 3, 'auth_token', 'ecbe6993281ec717f7531280e7c0cc1e77e5103e41370250611318b3fadf1700', '[\"*\"]', NULL, NULL, '2025-02-26 18:07:45', '2025-02-26 18:07:45'),
-(10, 'App\\Models\\User', 3, 'auth_token', 'e99ada09f8e657ae2c1948fe4cc8cf5915edd29f51b3b35ef7378538ddd4cd7f', '[\"user\"]', '2025-02-26 19:38:16', NULL, '2025-02-26 18:08:19', '2025-02-26 19:38:16'),
-(11, 'App\\Models\\User', 1, 'auth_token', '0f7b832378f7062bb230d5ceeeaaf9c17094eef1ade2ea1b1b27d240c94ea0e2', '[\"admin\"]', '2025-02-27 17:16:22', NULL, '2025-02-26 20:00:20', '2025-02-27 17:16:22'),
-(12, 'App\\Models\\User', 2, 'auth_token', '35eb95ea8bcdc8e34aa2a6904125d055005dbe5a46afdde7f48750ad7aff924b', '[\"chef\"]', '2025-03-02 23:44:43', NULL, '2025-02-27 17:17:37', '2025-03-02 23:44:43');
+(1, 'App\\Models\\User', 1, 'auth_token', 'b03c55f8f8c0a0751e9ba8c0ed3ddfd778158a5e39fa87d5c45a40e645431feb', '[\"*\"]', NULL, NULL, '2025-03-04 21:10:54', '2025-03-04 21:10:54'),
+(2, 'App\\Models\\User', 2, 'auth_token', '7c2c9b8e187e776f0cc9c7d5855a7292bf94081f9e4030409b9633d63aac4ef0', '[\"*\"]', NULL, NULL, '2025-03-04 21:14:29', '2025-03-04 21:14:29'),
+(3, 'App\\Models\\User', 2, 'auth_token', 'aabeab340ed56d6a8e0b8293f1ffe37697b05c073abec93063dc19fa2861c8cc', '[\"admin\"]', '2025-03-04 21:19:47', NULL, '2025-03-04 21:15:00', '2025-03-04 21:19:47'),
+(4, 'App\\Models\\User', 1, 'auth_token', '5011ff82eb69219dd57f924289fee4bf103174095248324ab5c2ebc99a3db0a5', '[\"chef\"]', '2025-03-05 18:51:47', NULL, '2025-03-04 21:25:25', '2025-03-05 18:51:47'),
+(5, 'App\\Models\\User', 1, 'auth_token', '435d29b2b8b8dc749d0d96bf36bef60bf1fec20b4ccae709703acbabb0022122', '[\"chef\"]', '2025-03-05 06:02:28', NULL, '2025-03-05 05:43:14', '2025-03-05 06:02:28');
 
 -- --------------------------------------------------------
 
@@ -230,9 +236,7 @@ CREATE TABLE `recipes` (
 --
 
 INSERT INTO `recipes` (`id`, `chef_id`, `title`, `description`, `category_id`, `image`, `created_at`, `updated_at`) VALUES
-(2, 2, 'Membuat nasi goreng', 'Kali ini saya membuat nasi goreng spesial seafood dengan cita rasa yang waw.', 1, 'C:\\xampp\\tmp\\php22B4.tmp', '2025-02-25 18:41:49', '2025-02-25 18:41:49'),
-(5, 2, 'Membuat tumis kadal', 'Resep baru kali ini adalah tumis kadal dengan cita rasa yang khas.', 2, 'recipes/WdJUrbXaxv7Gv7H8pqG54j9TrIbnBxCG426n6vxm.jpg', '2025-02-25 19:01:05', '2025-02-25 19:01:05'),
-(6, 2, 'tumis hiu', 'Tumis hiu dengan cita rasa yang khas', 1, 'recipes/KSA2QAhqLzAGIAtDLnu6nqOacCsUol1tzal8eEW6.jpg', '2025-02-26 20:12:47', '2025-02-26 21:24:12');
+(1, 1, 'Cheese Cake', 'Kali ini saya akan berbagi resep cheese cake yang simpel dan mudah di buat', 2, 'recipes/u2oEh1s8NKOWWWlkJOz9ryznRe9Cb86kDvKN3Aa3.jpg', '2025-03-04 21:26:48', '2025-03-04 21:30:24');
 
 -- --------------------------------------------------------
 
@@ -244,7 +248,6 @@ CREATE TABLE `recipe_ingredients` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `recipe_id` bigint(20) UNSIGNED NOT NULL,
   `ingredient` varchar(255) NOT NULL,
-  `quantity` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -253,10 +256,11 @@ CREATE TABLE `recipe_ingredients` (
 -- Dumping data untuk tabel `recipe_ingredients`
 --
 
-INSERT INTO `recipe_ingredients` (`id`, `recipe_id`, `ingredient`, `quantity`, `created_at`, `updated_at`) VALUES
-(1, 6, 'daging hiu', '200gr', '2025-03-02 22:21:11', '2025-03-02 22:21:11'),
-(2, 6, 'saus tiram', '20ml', '2025-03-02 22:21:11', '2025-03-02 22:21:11'),
-(3, 6, 'garam', '1kg', '2025-03-02 22:21:11', '2025-03-02 22:21:11');
+INSERT INTO `recipe_ingredients` (`id`, `recipe_id`, `ingredient`, `created_at`, `updated_at`) VALUES
+(1, 1, 'tepung terigu 120gr', '2025-03-04 23:15:51', '2025-03-04 23:15:51'),
+(2, 1, 'gula pasir 120gr', '2025-03-04 23:15:51', '2025-03-04 23:15:51'),
+(3, 1, 'margarin 100gr', '2025-03-04 23:15:51', '2025-03-04 23:15:51'),
+(4, 1, '3 butir telur', '2025-03-04 23:15:51', '2025-03-04 23:15:51');
 
 -- --------------------------------------------------------
 
@@ -268,12 +272,28 @@ CREATE TABLE `recipe_reviews` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `recipe_id` bigint(20) UNSIGNED NOT NULL,
-  `title` varchar(255) NOT NULL,
   `content` text NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `recipe_reviews`
+--
+
+INSERT INTO `recipe_reviews` (`id`, `user_id`, `recipe_id`, `content`, `image`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', 'recipe-reviews/ZpuZDJU7809JfwQk8uyx2N4z7O34tyML8ZxlwMky.png', '2025-03-04 23:18:56', '2025-03-04 23:18:56'),
+(2, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', 'recipe-reviews/tvkRru9gfbx6Bao1Y598PNOjl6YAlxw0FBfLQxGf.png', '2025-03-04 23:23:22', '2025-03-04 23:23:22'),
+(3, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', NULL, '2025-03-05 06:11:04', '2025-03-05 06:11:04'),
+(4, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', NULL, '2025-03-05 06:18:31', '2025-03-05 06:18:31'),
+(5, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', NULL, '2025-03-05 18:24:12', '2025-03-05 18:24:12'),
+(6, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', NULL, '2025-03-05 18:24:15', '2025-03-05 18:24:15'),
+(7, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', NULL, '2025-03-05 18:24:15', '2025-03-05 18:24:15'),
+(8, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', NULL, '2025-03-05 18:48:56', '2025-03-05 18:48:56'),
+(9, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', NULL, '2025-03-05 18:49:00', '2025-03-05 18:49:00'),
+(10, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', NULL, '2025-03-05 18:49:56', '2025-03-05 18:49:56'),
+(11, 1, 1, 'wiihh resepnya sangat bermanfaat ya bund ini saya sudah recook', NULL, '2025-03-05 18:51:47', '2025-03-05 18:51:47');
 
 -- --------------------------------------------------------
 
@@ -296,9 +316,10 @@ CREATE TABLE `recipe_steps` (
 --
 
 INSERT INTO `recipe_steps` (`id`, `recipe_id`, `step_no`, `instruction`, `image`, `created_at`, `updated_at`) VALUES
-(6, 6, 1, 'Dapatkan ikan  hiu di laut terdekat', 'http://127.0.0.1:8000/storage/recipe-steps/e9u59jOdJnjimbN8BVzNrf3ss2scyhLxmLXgcZzG.jpg', '2025-02-27 20:26:34', '2025-02-27 20:26:34'),
-(7, 6, 2, 'Belah ikan hiu menjadi beberapa bagian', 'http://127.0.0.1:8000/storage/recipe-steps/xQ2ILmdKSEorN30nHDi7GTn1LdLngr48puomqkzJ.jpg', '2025-02-27 20:26:34', '2025-02-27 20:26:34'),
-(8, 6, 3, 'Potong dadu daging ikan hiu menjadi 8 bagian dengan ukuran 5x5cm', 'http://127.0.0.1:8000/storage/recipe-steps/MTiombwlDQmKY7mV7PxzXM0GPqyWvlteP98a6oFU.jpg', '2025-02-27 20:26:34', '2025-02-27 20:26:34');
+(1, 1, 1, 'Pertama buat scramble egg (orak arik) dulu. Bikin setengah matang aja, sisihkan', 'http://127.0.0.1:8000/storage/recipe-steps/IzuG78xvuTTsuqpMrC2kEvMfcu8l4YKJ7Bs8GzHR.jpg', '2025-03-04 21:31:40', '2025-03-04 21:34:15'),
+(2, 1, 2, 'Campur potongan Timun bersama Mayonaise wijen, garam dan merica. Aduk hingga rata. Koreksi rasa', 'http://127.0.0.1:8000/storage/recipe-steps/1llFU8KWRWjLlN4fmR2phNCdk2O2zXtOyh58vhAV.jpg', '2025-03-04 21:31:40', '2025-03-04 23:12:57'),
+(3, 1, 3, 'Ambil Roti, beri olesan Timun Mayo, lalu scramble egg. Tambahkan Keju slice, dan tangkupkan Roti. Potong diagonal', NULL, '2025-03-04 21:31:40', '2025-03-04 21:31:40'),
+(4, 1, 4, 'Sajikan saat sarapan, atau dibawa sebagai bekal ke sekolah dan ke kantor', NULL, '2025-03-04 21:31:40', '2025-03-04 21:31:40');
 
 -- --------------------------------------------------------
 
@@ -314,16 +335,6 @@ CREATE TABLE `sessions` (
   `payload` longtext NOT NULL,
   `last_activity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data untuk tabel `sessions`
---
-
-INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('7gLrKt7OfjrYqhPYd9YBPkZBDbdwFtKAgVBGJlA0', NULL, '127.0.0.1', 'PostmanRuntime/7.43.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS1dZeGdTNzRzTmFOb1dibG8wM3h2YjNXVTRNdU9OWnh1Z3g2amw3NSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1740540311),
-('deqn68YNTGH9iCw8c6HJ6iFR3uclz5Fyw3cCVmps', NULL, '127.0.0.1', 'PostmanRuntime/7.43.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVTFSb0ZQdXdKSVVISUMwajZYSEdEZWRnYWpPWWxuQWJvSWF0TTdkRiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1740629808),
-('mcElz6Nhr5sLnZ2IXgHHXRjCgMYmJr8393LR9Y8O', NULL, '127.0.0.1', 'PostmanRuntime/7.43.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiOUd6cW5WaXdTZWpsY2wxMmNZd3k1cElwR3BTeFFPRFRRMjNRbzdiaiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1740711873),
-('Xr56pcbV9BiokRIqFe30iwGlpHXNhG1PAx8PBO1G', NULL, '127.0.0.1', 'PostmanRuntime/7.43.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZUU3d0lKUzNkMmhhREJJS2YxUW5ZUWV0VGVQdEpTVjAxR21WbGd5QSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1740984283);
 
 -- --------------------------------------------------------
 
@@ -349,9 +360,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `profile_picture`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@gmail.com', NULL, '$2y$12$P1FsJ5ZSy4b/k0ssb8LGouJB2reVtnz.oS9vDaLyFNu20PpHYJ/xi', 'admin', 'profiles/FsIaIWKbQJUZeySsGQy3Bxp8gmWgLI1MqAYIsDx5.jpg', NULL, '2025-02-25 08:27:10', '2025-02-25 08:27:10'),
-(2, 'chef', 'chef@gmail.com', NULL, '$2y$12$P7fctH9/aLqJM2XW.HpA8uo9sbPaaSP1oDP/J.ipu6YSaO9ozR342', 'chef', 'profiles/l7Mk2jZvzky0WjNU2mOYj01FJcCzpLg5K7uGgqAi.jpg', NULL, '2025-02-25 08:51:51', '2025-02-25 08:51:51'),
-(3, 'user', 'user@gmail.com', NULL, '$2y$12$q6gApNgU1rPimmjPQ/m3qeN0BNDVWd6Zy.yMo7TdfwwtwaJPab2Ly', 'user', 'profiles/QTFfcuwZyPY7f0gLxi6U6lUFlTCmxmHpz2aC8glF.jpg', NULL, '2025-02-26 18:07:44', '2025-02-26 18:07:44');
+(1, 'chef', 'chef@gmail.com', NULL, '$2y$12$05VYPG9MovxW5KxhIunyRe2.O8rzsOYt0liB3qUCi7a0Y/GwqZETO', 'chef', 'profiles/XOj8NzWUr0V0EilmNmzgtagbADDBTMFmdhjYZWA1.jpg', NULL, '2025-03-04 21:10:54', '2025-03-04 21:10:54'),
+(2, 'admin', 'admin@gmail.com', NULL, '$2y$12$JHiK09uII7PEc62UtJVOruhFpPyEN817U8tUIG7UvY9iDPv1oWe5u', 'admin', 'profiles/gmECOi56HXjdrt51RiiswTxfTz3Rgq5UyKQQi2zw.jpg', NULL, '2025-03-04 21:14:28', '2025-03-04 21:14:28');
 
 --
 -- Indexes for dumped tables
@@ -482,7 +492,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT untuk tabel `cooking_events`
 --
 ALTER TABLE `cooking_events`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -506,37 +516,37 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `recipes`
 --
 ALTER TABLE `recipes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `recipe_ingredients`
 --
 ALTER TABLE `recipe_ingredients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `recipe_reviews`
 --
 ALTER TABLE `recipe_reviews`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `recipe_steps`
 --
 ALTER TABLE `recipe_steps`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
