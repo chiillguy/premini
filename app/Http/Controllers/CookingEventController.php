@@ -43,7 +43,7 @@ class CookingEventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Cooking_event $cooking_event)
+    public function show(Cooking_event $cooking_event)  
     {
         return new CookingEventResource($cooking_event);
     }
