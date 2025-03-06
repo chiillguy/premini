@@ -26,7 +26,7 @@ class RecipeReviewController extends Controller
     public function store(RecipeReviewRequest $request)
     {
         $recipe_review = Recipe_review::create([
-            'user_id' => $request->user_id,
+            'user_id' => Auth::id(),
             'recipe_id' => $request->recipe_id,
             'content' => $request->content,
             'image' => $request->image,
@@ -40,8 +40,7 @@ class RecipeReviewController extends Controller
 
         return response()->json([
             'message' => 'Recipe review created',
-            'photo_url' => isset($imagePath) ? asset("storage/$imagePath") : null,
-            'recipe_review' => new RecipeResource($recipe_review)
+            'recipe_review' => new RecipeReviewResource($recipe_review)
         ], 201);
     }
 
@@ -50,7 +49,7 @@ class RecipeReviewController extends Controller
      */
     public function show(Recipe_review $recipe_review)
     {
-        return new RecipeResource($recipe_review);
+        return new RecipeReviewResource($recipe_review);
     }
 
     /**
