@@ -6,7 +6,9 @@ use App\Http\Requests\CookingEventRequest;
 use App\Http\Requests\UpdateCookingEventRequest;
 use App\Http\Resources\CookingEventResource;
 use App\Models\Cooking_event;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class CookingEventController extends Controller
 {
@@ -23,7 +25,14 @@ class CookingEventController extends Controller
      */
     public function store(CookingEventRequest $request)
     {
-        $cooking_event = Cooking_event::create($request->validated());
+        $cooking_event = Cooking_event::create([
+            'chef_id' => FacadesAuth::id(),
+            'title' => $request->title,
+            'description' => $request->description,
+            'date' => $request->date,
+            'location' => $request->location,
+            'image' => $request->image,
+        ]);
 
         return response()->json([
             'message' => 'Cooking event created',
