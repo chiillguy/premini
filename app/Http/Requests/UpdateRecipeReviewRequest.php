@@ -22,8 +22,8 @@ class UpdateRecipeReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
-            'recipe_id' => 'required|exists:recipes,id',
+            'user_id' => 'sometimes|required|exists:users,id',
+            'recipe_id' => 'sometimes|required|exists:recipes,id',
             'content' => 'sometimes|required|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ];
