@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RecipeIngredientRequest;
+use App\Http\Requests\UpdateRecipeIngredientRequest;
 use App\Http\Resources\RecipeIngredientResource;
 use App\Models\Recipe;
 use App\Models\Recipe_ingredient;
@@ -54,7 +55,7 @@ class RecipeIngredientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RecipeIngredientRequest $request, $id)
+    public function update(UpdateRecipeIngredientRequest $request, $id)
     {
         $recipe_ingredient = Recipe_ingredient::findOrFail($id);
         $recipe_ingredient->update($request->validated());
