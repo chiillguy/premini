@@ -14,6 +14,7 @@ class UpdateRecipeStepRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'recipe_id' => 'exists:recipes,id',
             'instruction' => 'sometimes|required|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
