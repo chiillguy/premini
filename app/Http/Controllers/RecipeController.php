@@ -8,6 +8,7 @@ use App\Http\Resources\RecipeResource;
 use App\Models\Recipe;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
@@ -33,7 +34,13 @@ class RecipeController extends Controller
      */
     public function store(RecipeRequest $request)
     {
-        $recipe = Recipe::create($request->validated());
+        $recipe = Recipe::create([
+            'chef_id' => Auth::id(),
+            'title' => $request->title,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'image' => $request->image,
+        ]);
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('recipes', 'public');
