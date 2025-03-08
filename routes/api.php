@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogContentController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CookingEventController;
 use App\Http\Controllers\RecipeController;
@@ -25,6 +27,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(RoleMiddleware::class . ':admin')->group(function () {
         Route::apiResource('categories', CategoryController::class);
         Route::apiResource('recipe-reviews', RecipeReviewController::class)->only('delete');
+        Route::apiResource('blogs', BlogController::class);
+        Route::apiResource('blog-contents', BlogContentController::class);
     });
 
     // **Chef & Admin**
