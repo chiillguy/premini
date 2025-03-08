@@ -20,7 +20,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('me', [AuthController::class, 'me'])->name('me');
 
     // **User, Chef, Admin bisa melihat resep & memberikan review**
-    Route::get('recipes', RecipeController::class)->only(['index', 'show']);
+    Route::apiResource('recipes', RecipeController::class)->only(['index', 'show']);
     Route::apiResource('recipe-reviews', RecipeReviewController::class)->only(['index', 'store', 'show']);
 
     // **Admin**
