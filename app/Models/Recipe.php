@@ -50,4 +50,24 @@ class Recipe extends Model
     {
         return $this->hasMany(Comment::class, 'recipe_id');
     }
+
+    /**
+     * Get all of the comments for the Recipe
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function steps(): HasMany
+    {
+        return $this->hasMany(Recipe_step::class);
+    }
+
+    /**
+     * Get all of the ingredients for the Recipe
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ingredients(): HasMany
+    {
+        return $this->hasMany(Recipe_ingredient::class);
+    }
 }
