@@ -15,6 +15,7 @@ class BlogResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'image' => $this->image ? asset("storage/{$this->image}") : null,
         ];
     }
