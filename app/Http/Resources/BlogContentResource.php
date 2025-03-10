@@ -18,6 +18,7 @@ class BlogContentResource extends JsonResource
             'id' => $this->id,
             'image' => $this->image ? asset("storage/{$this->image}") : null,
             'content' => $this->content,
+            'created_at' => $this->created_at,
         ];
     }
 }
