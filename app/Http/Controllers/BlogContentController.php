@@ -25,6 +25,12 @@ class BlogContentController extends Controller
     {
         $blogContent = BlogContent::create($request->validated());
 
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('blog-contents', 'public');
+
+            $blogContent->update(['image' => $imagePath]);
+        }
+
         return response()->json([
             'message' => 'Blog content created',
             'content' => new BlogContentResource($blogContent)
@@ -45,6 +51,11 @@ class BlogContentController extends Controller
     public function update(UpdateBlogContentRequest $request, BlogContent $blogContent)
     {
         $blogContent->update($request->validated());
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('blog-contents', 'public');
+            $blogContent->update(['image' => $imagePath]);
+        }
 
         return response()->json([
             'message' => 'Blog content updated',
