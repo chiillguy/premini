@@ -17,7 +17,6 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'category' => $this->name,
-            'created_at' => $this->created_at,
         ];
     }
 }
