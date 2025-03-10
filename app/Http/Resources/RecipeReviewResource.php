@@ -20,6 +20,7 @@ class RecipeReviewResource extends JsonResource
             'recipe' => $this->recipe->title,
             'content' => $this->content,
             'image' => $this->image ? asset("storage/{$this->image}") : null,
+            'created_at' => $this->created_at,
         ];
     }
 }
