@@ -33,6 +33,12 @@ class CookingEventController extends Controller
             'image' => $request->image,
         ]);
 
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('cooking-events', 'public');
+
+            $cooking_event->update(['image' => $imagePath]);
+        }
+
         return response()->json([
             'message' => 'Cooking event created',
             'cooking_event' => new CookingEventResource($cooking_event)
@@ -53,6 +59,11 @@ class CookingEventController extends Controller
     public function update(UpdateCookingEventRequest $request, Cooking_event $cooking_event)
     {
         $cooking_event->update($request->validated());
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('cooking-events', 'public');
+            $cooking_event->update(['image' => $imagePath]);
+        }
 
         return response()->json([
             'message' => 'Cooking event updated',
