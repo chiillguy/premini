@@ -28,7 +28,7 @@ class BlogController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('blogs', 'public');
 
-            $blog->update(['image' => 'storage/' . $imagePath]);
+            $blog->update(['image' => $imagePath]);
         }
 
         return response([
@@ -54,7 +54,7 @@ class BlogController extends Controller
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('blogs', 'public');
-            $blog->update(['image' => 'storage/' . $imagePath]);
+            $blog->update(['image' => $imagePath]);
         }
 
         return response()->json([

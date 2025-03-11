@@ -34,6 +34,26 @@ class RecipeController extends Controller
      */
     public function store(RecipeRequest $request)
     {
+        // $recipe = Recipe::create([
+        //     'chef_id' => Auth::id(),
+        //     'title' => $request->title,
+        //     'description' => $request->description,
+        //     'category_id' => $request->category_id,
+        //     'image' => $request->image,
+        // ]);
+
+        // if ($request->hasFile('image')) {
+        //     $imagePath = $request->file('image')->store('recipes', 'public');
+
+        //     $recipe->update(['image' => $imagePath]);
+        // }
+
+        // return response()->json([
+        //     'message' => 'Recipe created successfully',
+        //     'recipe' => new RecipeResource($recipe)
+        // ], 201);
+
+        // Buat Recipe
         $recipe = Recipe::create([
             'chef_id' => Auth::id(),
             'title' => $request->title,
@@ -42,16 +62,42 @@ class RecipeController extends Controller
             'image' => $request->image,
         ]);
 
+        // Simpan gambar jika ada
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('recipes', 'public');
+            $recipe->update(['image' => $imagePath]);
+        }
 
-            $recipe->update(['image' => 'storage/' . $imagePath]);
+        // Simpan Recipe Ingredients
+        if ($request->has('ingredients')) {
+            foreach ($request->ingredients as $ingredient) {
+                $recipe->ingredients()->create([
+                    'ingredient' => $ingredient['ingredient'],
+                ]);
+            }
+        }
+
+        // Simpan Recipe Steps
+        if ($request->has('steps')) {
+            foreach ($request->steps as $index => $step) {
+                $imagePath = null;
+                if (!empty($step['image'])) {
+                    $imagePath = $step['image']->store('recipe-steps', 'public');
+                }
+
+                $recipe->steps()->create([
+                    'step_no' => $index + 1,
+                    'instruction' => $step['instruction'],
+                    'image' => $imagePath ? asset("storage/$imagePath") : null,
+                ]);
+            }
         }
 
         return response()->json([
             'message' => 'Recipe created successfully',
-            'recipe' => new RecipeResource($recipe)
+            'recipe' => new RecipeResource($recipe->load('steps', 'ingredients')),
         ], 201);
+        
     }
 
     /**
@@ -74,7 +120,7 @@ class RecipeController extends Controller
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('recipes', 'public');
-            $recipe->update(['image' => 'storage/' . $imagePath]);
+            $recipe->update(['image' => $imagePath]);
         }
 
         return response()->json([

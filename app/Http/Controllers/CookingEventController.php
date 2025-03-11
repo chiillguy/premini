@@ -36,7 +36,7 @@ class CookingEventController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('cooking-events', 'public');
 
-            $cooking_event->update(['image' => 'storage/' . $imagePath]);
+            $cooking_event->update(['image' => $imagePath]);
         }
 
         return response()->json([
@@ -62,7 +62,7 @@ class CookingEventController extends Controller
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('cooking-events', 'public');
-            $cooking_event->update(['image' => 'storage/' . $imagePath]);
+            $cooking_event->update(['image' => $imagePath]);
         }
 
         return response()->json([
