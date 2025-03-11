@@ -21,7 +21,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // **User, Chef, Admin bisa melihat resep & memberikan review**
     Route::apiResource('recipes', RecipeController::class)->only(['index', 'show']);
-    Route::apiResource('recipe-reviews', RecipeReviewController::class)->only(['index', 'store', 'show']);
+    Route::apiResource('recipe-reviews', RecipeReviewController::class)->only(['index', 'store', 'show', 'update']);
     Route::apiResource('cooking-events', CookingEventController::class)->only(['index', 'show']);
 
     // **Admin**
@@ -34,12 +34,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // **Chef & Admin**
     Route::middleware(RoleMiddleware::class . ':admin,chef')->group(function () {
-        Route::apiResource('recipes', RecipeController::class)->except(['index', 'show']);
         Route::apiResource('cooking-events', CookingEventController::class)->except(['index', 'show']);
     });
-
+    
     // **Chef**
     Route::middleware(RoleMiddleware::class . ':chef')->group(function () {
+        Route::apiResource('recipes', RecipeController::class)->except(['index', 'show']);
         Route::apiResource('recipe-steps', RecipeStepController::class);
         Route::apiResource('recipe-ingredients', RecipeIngredientController::class);
     });
