@@ -21,7 +21,7 @@ class CookingEventResource extends JsonResource
             'description' => $this->description,
             'date' => $this->date,
             'location' => $this->location,
-            'image' => $this->image,
+            'image' => $this->image ? asset("storage/{$this->image}") : null,
         ];
     }
 }
