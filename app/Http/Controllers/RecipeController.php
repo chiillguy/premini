@@ -45,7 +45,7 @@ class RecipeController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('recipes', 'public');
 
-            $recipe->update(['image' => $imagePath]);
+            $recipe->update(['image' => 'storage/' . $imagePath]);
         }
 
         return response()->json([
@@ -74,7 +74,7 @@ class RecipeController extends Controller
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('recipes', 'public');
-            $recipe->update(['image' => $imagePath]);
+            $recipe->update(['image' => 'storage/' . $imagePath]);
         }
 
         return response()->json([
