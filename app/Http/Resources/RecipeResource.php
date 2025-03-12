@@ -22,8 +22,8 @@ class RecipeResource extends JsonResource
             'description' => $this->description,
             'image' => $this->image ? asset("storage/{$this->image}") : null,
             'created_at' => $this->created_at,
-            'steps' => RecipeStepResource::collection($this->steps),
             'ingredients' => RecipeIngredientResource::collection($this->ingredients),
+            'steps' => RecipeStepResource::collection($this->steps),
         ];
     }
 }
