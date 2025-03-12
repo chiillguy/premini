@@ -22,11 +22,17 @@ class UpdateRecipeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'chef_id' => 'sometimes|required|exists:users,id',
             'title' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required',
+            'description' => 'sometimes|required|string',
             'category_id' => 'sometimes|required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'ingredients' => 'sometimes|array|min:1',
+            'ingredients.*.id' => 'sometimes|exists:recipe_ingredients,id',
+            'ingredients.*.ingredient' => 'required|string|max:255',
+            'steps' => 'sometimes|array|min:1',
+            'steps.*.id' => 'sometimes|exists:recipe_steps,id',
+            'steps.*.instruction' => 'required|string',
+            'steps.*.image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 }
