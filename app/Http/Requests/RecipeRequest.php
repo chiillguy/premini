@@ -22,11 +22,15 @@ class RecipeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'chef_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
-            'description' => 'required',
+            'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'ingredients' => 'required|array|min:1',
+            'ingredients.*.ingredient' => 'required|string|max:255',
+            'steps' => 'required|array|min:1',
+            'steps.*.instruction' => 'required|string',
+            'steps.*.image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 }
