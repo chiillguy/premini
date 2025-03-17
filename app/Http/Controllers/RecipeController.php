@@ -26,25 +26,50 @@ class RecipeController extends Controller
 
         if ($request->has('search')) {
             $search = $request->input('search');
-            $query->where('title', 'LIKE', "%{$search}%")->orWhere('description', 'LIKE', "%{$search}%");
+            $query->where('title', 'LIKE', "%{$search}%");
         }
 
-        return RecipeResource::collection($query->paginate(10));
+        return RecipeResource::collection($query->paginate(6));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RecipeRequest $request)
+    public function store(Request $request)
     {
         // Buat Recipe
-        $request->validated();
+        // $request->validated();
+
+
+        try {
+            $validatedData = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'category' => 'required',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'ingredients' => 'required|array|min:1',
+                'ingredients.*.ingredient' => 'required|string|max:255',
+                'steps' => 'required|array|min:1',
+                'steps.*.instruction' => 'required|string',
+                'steps.*.image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            ]);
+
+            // return response()->json([
+            //     'message' => 'Recipe created successfully',
+            //     'data' => $validatedData
+            // ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        }
 
         $recipe = Recipe::create([
             'chef_id' => Auth::id(),
             'title' => $request->title,
             'description' => $request->description,
-            'category_id' => $request->category_id,
+            'category' => $request->category,
             'image' => $request->image,
         ]);
 
@@ -76,7 +101,7 @@ class RecipeController extends Controller
                 $recipe->steps()->create([
                     'step_no' => $index + 1,
                     'instruction' => $step['instruction'],
-                    'image' => $imagePath ? asset("storage/$imagePath") : null,
+                    'image' => $imagePath ?? null,
                 ]);
             }
         }
@@ -101,29 +126,44 @@ class RecipeController extends Controller
      */
     public function update(UpdateRecipeRequest $request, Recipe $recipe)
     {
-        Log::info('Request data:', $request->all());
-
-        $recipe->update($request->validated());
+        try {
+            $validatedData = $request->validate([
+                'title' => 'sometimes|required|string|max:255',
+                'description' => 'sometimes|required|string',
+                'category' => 'sometimes|required',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'ingredients' => 'sometimes|array|min:1',
+                'ingredients.*.id' => 'nullable|exists:recipe_ingredients,id',
+                'ingredients.*.ingredient' => 'required|string|max:255',
+                'steps' => 'sometimes|array|min:1',
+                'steps.*.id' => 'nullable|exists:recipe_steps,id',
+                'steps.*.instruction' => 'required|string',
+                'steps.*.image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        }
 
         // Update Recipe
         $recipe->update($request->only(['title', 'description', 'category_id']));
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('recipes', 'public');
-            $recipe->update(['image' => $imagePath]);
+            $recipe->update(['image' => asset("storage/$imagePath")]);
         }
 
         // Update Ingredients
         if ($request->has('ingredients')) {
             foreach ($request->ingredients as $ingredientData) {
-                if (isset($ingredientData['id'])) {
-                    // Update existing ingredient
+                if (!empty($ingredientData['id'])) {
                     $ingredient = Recipe_ingredient::find($ingredientData['id']);
                     if ($ingredient) {
                         $ingredient->update(['ingredient' => $ingredientData['ingredient']]);
                     }
                 } else {
-                    // Create new ingredient
                     Recipe_ingredient::create([
                         'recipe_id' => $recipe->id,
                         'ingredient' => $ingredientData['ingredient']
@@ -135,14 +175,12 @@ class RecipeController extends Controller
         // Update Steps
         if ($request->has('steps')) {
             foreach ($request->steps as $stepData) {
-                $imagePath = $stepData['image'] ?? null;
-
-                if (!empty($stepData['image']) && is_file($stepData['image'])) {
+                $imagePath = null;
+                if (!empty($stepData['image']) && $request->hasFile("steps.{$stepData['id']}.image")) {
                     $imagePath = $stepData['image']->store('recipe-steps', 'public');
                 }
 
-                if (isset($stepData['id'])) {
-                    // Update existing step
+                if (!empty($stepData['id'])) {
                     $step = Recipe_step::find($stepData['id']);
                     if ($step) {
                         $step->update([
@@ -151,7 +189,6 @@ class RecipeController extends Controller
                         ]);
                     }
                 } else {
-                    // Create new step
                     Recipe_step::create([
                         'recipe_id' => $recipe->id,
                         'step_no' => Recipe_step::where('recipe_id', $recipe->id)->count() + 1,
@@ -167,6 +204,7 @@ class RecipeController extends Controller
             'recipe' => new RecipeResource($recipe)
         ], 202);
     }
+
 
     /**
      * Remove the specified resource from storage.

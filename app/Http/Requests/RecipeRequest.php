@@ -24,7 +24,7 @@ class RecipeRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
+            'categories' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'ingredients' => 'required|array|min:1',
             'ingredients.*.ingredient' => 'required|string|max:255',

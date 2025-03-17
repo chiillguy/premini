@@ -17,7 +17,11 @@ class RecipeStepController extends Controller
      */
     public function index()
     {
-        return RecipeStepResource::collection(Recipe_step::all());
+        $steps = Recipe_step::all();
+        return response()->json([
+            'message' => 'Success Fetching Data',
+            'data' => $steps
+        ], 201);
     }
 
     /**
@@ -25,33 +29,33 @@ class RecipeStepController extends Controller
      */
     public function store(RecipeStepRequest $request)
     {
-        $request->validated();
-        $recipe_id = $request->recipe_id ?? Recipe::latest()->first()->id;
-        $steps = [];
+        // $request->validated();
+        // $recipe_id = $request->recipe_id ?? Recipe::latest()->first()->id;
+        // $steps = [];
 
-        $stepNumber = Recipe_step::where('recipe_id', $recipe_id)->count() + 1;
+        // $stepNumber = Recipe_step::where('recipe_id', $recipe_id)->count() + 1;
 
-        foreach ($request->steps as $step) {
-            $imagePath = null;
+        // foreach ($request->steps as $step) {
+        //     $imagePath = null;
 
-            if (!empty($step['image'])) {
-                $imagePath = $step['image']->store('recipe-steps', 'public');
-            }
+        //     if (!empty($step['image'])) {
+        //         $imagePath = $step['image']->store('recipe-steps', 'public');
+        //     }
 
-            $recipeStep = Recipe_step::create([
-                'recipe_id' => $recipe_id,
-                'step_no' => $stepNumber++,
-                'instruction' => $step['instruction'],
-                'image' => $imagePath ? asset("storage/$imagePath") : null
-            ]);
+        //     $recipeStep = Recipe_step::create([
+        //         'recipe_id' => $recipe_id,
+        //         'step_no' => $stepNumber++,
+        //         'instruction' => $step['instruction'],
+        //         'image' => $imagePath ? asset("storage/$imagePath") : null
+        //     ]);
 
-            $steps[] = new RecipeStepResource($recipeStep);
-        }
+        //     $steps[] = new RecipeStepResource($recipeStep);
+        // }
 
-        return response()->json([
-            'message' => 'Recipe steps created successfully',
-            'steps' => $steps
-        ], 201);
+        // return response()->json([
+        //     'message' => 'Recipe steps created successfully',
+        //     'steps' => $steps
+        // ], 201);
     }
 
     /**
@@ -67,20 +71,20 @@ class RecipeStepController extends Controller
      */
     public function update(UpdateRecipeStepRequest $request, $id)
     {
-        $recipe_step = Recipe_step::findOrFail($id);
-        $validatedData = $request->validated();
+        // $recipe_step = Recipe_step::findOrFail($id);
+        // $validatedData = $request->validated();
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('recipe-steps', 'public');
-            $validatedData['image'] = asset("storage/$imagePath");
-        }
+        // if ($request->hasFile('image')) {
+        //     $imagePath = $request->file('image')->store('recipe-steps', 'public');
+        //     $validatedData['image'] = asset("storage/$imagePath");
+        // }
 
-        $recipe_step->update($validatedData);
+        // $recipe_step->update($validatedData);
 
-        return response()->json([
-            'message' => 'Recipe step updated successfully',
-            'recipe_step' => new RecipeStepResource($recipe_step)
-        ], 202);
+        // return response()->json([
+        //     'message' => 'Recipe step updated successfully',
+        //     'recipe_step' => new RecipeStepResource($recipe_step)
+        // ], 202);
     }
 
     /**

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('chef_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->text('description');
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->integer('category');
             $table->string('image')->nullable();
             $table->timestamps();
         });

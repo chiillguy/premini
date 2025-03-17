@@ -33,6 +33,7 @@ class AuthController extends Controller
     }
 
     public function login(LoginRequest $request) {
+        
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {

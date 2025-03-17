@@ -17,7 +17,7 @@ class RecipeResource extends JsonResource
         return [
             'id' => $this->id,
             'chef' => $this->chef->name,
-            'category' => $this->category->name,
+            'category' => $this->category,
             'title' => $this->title,
             'description' => $this->description,
             'image' => $this->image ? asset("storage/{$this->image}") : null,

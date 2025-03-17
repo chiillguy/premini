@@ -24,7 +24,7 @@ class UpdateRecipeRequest extends FormRequest
         return [
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
-            'category_id' => 'sometimes|required|exists:categories,id',
+            'categories' => 'sometimes|required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'ingredients' => 'sometimes|array|min:1',
             'ingredients.*.id' => 'sometimes|exists:recipe_ingredients,id',
