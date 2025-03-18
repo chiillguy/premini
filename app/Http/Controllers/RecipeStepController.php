@@ -19,7 +19,7 @@ class RecipeStepController extends Controller
     {
         return RecipeStepResource::collection(Recipe_step::all());
     }
-
+ 
     /**
      * Store a newly created resource in storage.
      */
