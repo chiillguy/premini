@@ -12,7 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'cors' => \App\Http\Middleware\CorsMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
@@ -22,3 +24,5 @@ return Application::configure(basePath: dirname(__DIR__))
         \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ]);
+
+
