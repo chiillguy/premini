@@ -22,8 +22,14 @@ Route::middleware(['cors'])->group(function(){
         Route::get('me', [AuthController::class, 'me'])->name('me');
     
         // **User, Chef, Admin bisa melihat resep & memberikan review**
+
         Route::apiResource('recipes', RecipeController::class)->only(['index', 'show']);
         Route::apiResource('recipe-reviews', RecipeReviewController::class)->only(['index', 'store', 'show', 'update']);
+        // Route::apiResource('recipes', RecipeController::class)->only(['index', 'show']);
+        Route::get('/recipes', [RecipeController::class, 'index']);
+        Route::get('/recipes/{recipe}', [RecipeController::class, 'show']);
+        Route::apiResource('recipe-reviews', RecipeReviewController::class);
+        // Route::get('/recipe-reviews/{recipe_review}', [RecipeReviewController::class, 'show']);
         Route::apiResource('cooking-events', CookingEventController::class)->only(['index', 'show']);
     
         // **Admin**

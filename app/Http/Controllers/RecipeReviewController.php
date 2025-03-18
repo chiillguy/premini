@@ -17,7 +17,12 @@ class RecipeReviewController extends Controller
      */
     public function index()
     {
-        return RecipeReviewResource::collection(Recipe_review::all());
+        $reviews = Recipe_review::with('user')->get();
+        return response()->json([
+            'message' => 'Success Fetching Data',
+            'data' => $reviews
+        ], 200);
+        // return RecipeReviewResource::collection(Recipe_review::all());
     }
 
     /**
@@ -51,6 +56,12 @@ class RecipeReviewController extends Controller
     {
         return new RecipeReviewResource($recipe_review);
     }
+
+    // public function show(Recipe_review $recipe_review)
+    // {
+    //     $reviews = Recipe_review::where('recipe_id', $recipe_review->id);
+    //     return response()->json(['reviews' => $reviews]);
+    // }
 
     /**
      * Update the specified resource in storage.

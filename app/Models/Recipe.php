@@ -17,7 +17,7 @@ class Recipe extends Model
         'chef_id',
         'title',
         'description',
-        'category_id',
+        'category',
         'image',
     ];
 
@@ -29,16 +29,6 @@ class Recipe extends Model
     public function chef(): BelongsTo
     {
         return $this->belongsTo(User::class, 'chef_id');
-    }
-
-    /**
-     * Get the user that owns the Recipe
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class, 'category_id');
     }
 
     /**

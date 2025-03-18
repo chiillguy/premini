@@ -16,7 +16,11 @@ class RecipeIngredientController extends Controller
      */
     public function index()
     {
-        return RecipeIngredientResource::collection(Recipe_ingredient::all());
+        $ingredients = Recipe_ingredient::all();
+        return response()->json([
+            'message' => 'Success Fetching data',
+            'data' => $ingredients
+        ], 201);
     }
 
     /**
@@ -24,24 +28,24 @@ class RecipeIngredientController extends Controller
      */
     public function store(RecipeIngredientRequest $request)
     {
-        $request->validated();
-        $recipe_id = $request->recipe_id ?? Recipe::latest()->first()->id;
+        // $request->validated();
+        // $recipe_id = $request->recipe_id ?? Recipe::latest()->first()->id;
 
-        $ingredients = [];
+        // $ingredients = [];
 
-        foreach ($request->ingredients as $ingredient) {
-            $recipeIngredient = Recipe_ingredient::create([
-                'recipe_id' => $recipe_id,
-                'ingredient' => $ingredient['ingredient'],
-            ]);
+        // foreach ($request->ingredients as $ingredient) {
+        //     $recipeIngredient = Recipe_ingredient::create([
+        //         'recipe_id' => $recipe_id,
+        //         'ingredient' => $ingredient['ingredient'],
+        //     ]);
 
-            $ingredients[] = new RecipeIngredientResource($recipeIngredient);
-        }
-        
-        return response()->json([
-            'message' => 'Recipe ingredient created',
-            'ingredients' => $ingredients
-        ], 201);
+        //     $ingredients[] = new RecipeIngredientResource($recipeIngredient);
+        // }
+
+        // return response()->json([
+        //     'message' => 'Recipe ingredient created',
+        //     'ingredients' => $ingredients
+        // ], 201);
     }
 
     /**
@@ -57,13 +61,13 @@ class RecipeIngredientController extends Controller
      */
     public function update(UpdateRecipeIngredientRequest $request, $id)
     {
-        $recipe_ingredient = Recipe_ingredient::findOrFail($id);
-        $recipe_ingredient->update($request->validated());
+        // $recipe_ingredient = Recipe_ingredient::findOrFail($id);
+        // $recipe_ingredient->update($request->validated());
 
-        return response()->json([
-            'message' => 'Recipe ingredient updated',
-            'recipe_ingredient' => new RecipeIngredientResource($recipe_ingredient)
-        ], 202);
+        // return response()->json([
+        //     'message' => 'Recipe ingredient updated',
+        //     'recipe_ingredient' => new RecipeIngredientResource($recipe_ingredient)
+        // ], 202);
     }
 
     /**

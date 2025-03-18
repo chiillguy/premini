@@ -26,3 +26,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ]);
 
 
+    $app->middleware([
+        \App\Http\Middleware\SessionTimeout::class,
+    ]);
+
+
