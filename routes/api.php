@@ -30,6 +30,10 @@ Route::middleware(['cors'])->group(function(){
         Route::get('/recipes/{recipe}', [RecipeController::class, 'show']);
         Route::apiResource('recipe-reviews', RecipeReviewController::class);
         // Route::get('/recipe-reviews/{recipe_review}', [RecipeReviewController::class, 'show']);
+        Route::get('/recipes', [RecipeController::class, 'index']);
+        Route::get('/recipes/{recipe}', [RecipeController::class, 'show']);
+        Route::apiResource('categories', CategoryController::class);
+        Route::apiResource('recipe-reviews', RecipeReviewController::class);
         Route::apiResource('cooking-events', CookingEventController::class)->only(['index', 'show']);
     
         // **Admin**
